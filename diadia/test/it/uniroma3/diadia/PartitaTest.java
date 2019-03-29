@@ -1,11 +1,20 @@
 package it.uniroma3.diadia;
 
 import static org.junit.Assert.*;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import it.uniroma3.diadia.ambienti.Stanza;
 
 public class PartitaTest {
+	
+	private Partita partita;
+
+	@Before
+	public void setUp() {
+		this.partita = new Partita();
+	}
 	
 	/**
 	 * Verifica che, quando i cfu raggiungono lo zero, 
@@ -13,12 +22,11 @@ public class PartitaTest {
 	 */
 	@Test
 	public void testFinita_zeroCfu() {
-		Partita p = new Partita();
-		p.getGiocatore().setCfu(0);
+		this.partita.getGiocatore().setCfu(0);
 		
 		assertTrue(
 			"Sebbene i cfu siano pari a 0, la partita non e' finita",
-			p.isFinita()
+			this.partita.isFinita()
 		);
 	}
 	
@@ -27,11 +35,9 @@ public class PartitaTest {
 	 */
 	@Test
 	public void testStanzaCorrente_esiste() {
-		Partita p = new Partita();
-		
 		assertNotNull(
 			"All'inizio della partita, non esistono stanze", 
-			p.getStanzaCorrente()
+			this.partita.getStanzaCorrente()
 		);
 	}
 	
@@ -39,24 +45,40 @@ public class PartitaTest {
 	 * Quando la partita viene creata, non è ancora stata vinta.
 	 */
 	@Test
-	public void testNonVinta_onInit() {
-		Partita p = new Partita();
-		
-		assertFalse("Partita vinta al momento della sua inizializzazione", p.vinta());
+	public void testVinta_onInit() {
+		assertFalse(
+			"Partita vinta al momento della sua inizializzazione", 
+			this.partita.vinta());
 	}
 	
-	/**
-	 * Quando la stanza corrente è la stanza vincente,
-	 * la partita deve finire e deve risultare che sia stata vinta.
-	 */
+	@Test
+	public void testFinita_onInit() {
+		assertFalse(this.partita.isFinita());
+	}
+	
+	public void testFinita_set() {
+		this.partita.setFinita();
+		assertTrue(this.partita.isFinita());
+	}
+	
 	@Test
 	public void testFinita_raggiuntoStanzaVincente() {
-		Partita p = new Partita();
-		Stanza vincente = p.getStanzaVincente();
-		p.setStanzaCorrente(vincente);
+		Stanza vincente = this.partita.getStanzaVincente();
+		this.partita.setStanzaCorrente(vincente);
 		
-		assertTrue("Stanza vincente raggiunta ma partita non finita", p.isFinita());
-		assertTrue("Stanza vincente raggiunta ma partita non vinta", p.vinta());
+		assertTrue(
+			"Stanza vincente raggiunta ma partita non finita", 
+			this.partita.isFinita());
+	}
+
+	@Test
+	public void testVinta_raggiuntoStanzaVincente() {
+		Stanza vincente = this.partita.getStanzaVincente();
+		this.partita.setStanzaCorrente(vincente);
+		
+		assertTrue(
+			"Stanza vincente raggiunta ma partita non vinta", 
+			this.partita.vinta());
 	}
 	
 	/**
