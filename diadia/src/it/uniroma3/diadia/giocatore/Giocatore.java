@@ -30,4 +30,12 @@ public class Giocatore {
 	public Attrezzo posa(String nomeAttrezzo) {
 		return this.borsa.removeAttrezzo(nomeAttrezzo);
 	}
+	
+	public Borsa getBorsa() {
+		return this.borsa;
+	}
+	
+	public String toString() {
+		return "Al momento hai " + this.getCfu() + " CFU\n";
+	}
 }
