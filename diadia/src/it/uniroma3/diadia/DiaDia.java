@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import it.uniroma3.diadia.ambienti.Stanza;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
+import it.uniroma3.diadia.comandi.Comando;
 
 /**
  * Classe principale di diadia, un semplice gioco di ruolo ambientato al dia.
@@ -53,7 +54,7 @@ public class DiaDia {
 	 * @return true se l'istruzione e' eseguita e il gioco continua, false altrimenti
 	 */
 	private boolean processaIstruzione(String istruzione) {
-		FabbricaDiComandi factory = new FabbricaDiComandi();
+		FabbricaDiComandiFisarmonica factory = new FabbricaDiComandiFisarmonica();
 		Comando comando = factory.creaComando(istruzione);
 		
 		comando.esegui(this.partita);
@@ -64,7 +65,10 @@ public class DiaDia {
 		} else if(this.partita.getGiocatore().getCfu() <= 0) {
 			System.out.println("Hai finito i cfu, hai perso!");
 			return true;
-		}		
+		}
+		else if(this.partita.isFinita()) {
+			return true;
+		}
 		return false;
 	}
 
