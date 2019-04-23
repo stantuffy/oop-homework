@@ -68,9 +68,6 @@ public class ComandoVaiTest {
 		assertTrue(this.partita.isFinita());
 	}
 	
-	// Se eseguo il comando, passando come parametro una direzione non prevista dalla stanza corrente, rimango nella stessa stanza
-	// TODO
-	
 	// Se eseguo il comando con un parametro non valido, il giocatore non perde cfu
 	@Test
 	public void testEseguiMantieneCfu() {

@@ -1,15 +1,6 @@
-package it.uniroma3.diadia;
+package it.uniroma3.diadia.comandi;
 
 import java.util.Scanner;
-
-import it.uniroma3.diadia.comandi.Comando;
-import it.uniroma3.diadia.comandi.ComandoAiuto;
-import it.uniroma3.diadia.comandi.ComandoFine;
-import it.uniroma3.diadia.comandi.ComandoGuarda;
-import it.uniroma3.diadia.comandi.ComandoNonValido;
-import it.uniroma3.diadia.comandi.ComandoPosa;
-import it.uniroma3.diadia.comandi.ComandoPrendi;
-import it.uniroma3.diadia.comandi.ComandoVai;
 
 public class FabbricaDiComandiFisarmonica implements FabbricaDiComandi {
 	public final static String[] ELENCO_COMANDI = {"vai", "prendi", "posa", "aiuto", "guarda", "fine"};

@@ -205,6 +205,13 @@ public class Stanza {
 		}
 		return attrezzoCercato;	
 	}
+	
+	/**
+	 * @return Ritorna il numero di attrezzi presenti nella stanza.
+	 */
+	public int getNumAttrezzi() {
+		return this.numeroAttrezzi;
+	}
 
 
 	public String[] getDirezioni() {
