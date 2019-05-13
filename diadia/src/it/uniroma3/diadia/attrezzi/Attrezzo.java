@@ -50,6 +50,23 @@ public class Attrezzo {
 	public int getPeso() {
 		return this.peso;
 	}
+	
+	@Override
+	public int hashCode() {
+		return this.nome.hashCode() + this.peso;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o == null)
+			return false;
+		if(o.getClass() != this.getClass())
+			return false;
+		
+		Attrezzo that = (Attrezzo)o;
+		
+		return this.getNome().equals(that.getNome()) && this.getPeso() == that.getPeso();
+	}
 
 	/**
 	 * Restituisce una rappresentazione stringa di questo attrezzo
