@@ -9,7 +9,7 @@ import it.uniroma3.diadia.attrezzi.Attrezzo;
 
 public class StanzaBloccataTest {
 	private static final String NOME_ATTREZZO_SBLOCCANTE = "Attrezzo";
-	private static final String DIREZIONE_BLOCCATA = "nord";
+	private static final DirezioneStanza DIREZIONE_BLOCCATA = DirezioneStanza.Nord;
 	private static final String[] DIREZIONI_NON_BLOCCATE = {"sud", "est", "ovest"};
 	private static final String NOME_STANZA = "Stanza";
 	private StanzaBloccata stanza;
@@ -17,7 +17,7 @@ public class StanzaBloccataTest {
 
 	@Before
 	public void setUp() throws Exception {
-		this.stanza = new StanzaBloccata(NOME_STANZA, DIREZIONE_BLOCCATA, NOME_ATTREZZO_SBLOCCANTE);
+		this.stanza = new StanzaBloccata(NOME_STANZA, DIREZIONE_BLOCCATA.toString(), NOME_ATTREZZO_SBLOCCANTE);
 		
 		this.stanzaPlaceholder = new Stanza("placeholder");
 		
@@ -40,7 +40,7 @@ public class StanzaBloccataTest {
 	// La direzione bloccata è quella impostata.
 	@Test
 	public void testGetNomeDirezioneBloccata() {
-		assertEquals(DIREZIONE_BLOCCATA, this.stanza.getNomeDirezioneBloccata());
+		assertEquals(DIREZIONE_BLOCCATA, this.stanza.getDirezioneBloccata());
 	}
 	
 	// L'attrezzo sbloccante è quello impostato.

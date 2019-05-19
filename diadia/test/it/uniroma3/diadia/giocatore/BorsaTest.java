@@ -1,24 +1,50 @@
 package it.uniroma3.diadia.giocatore;
 
 import static org.junit.Assert.*;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 import it.uniroma3.diadia.giocatore.Borsa;
 
 public class BorsaTest {
-	/**
-	 * Verifica che non è possibile aggiungere oltre 10 attrezzi.
-	 */
-	@Test
-	public void testAddAttrezzo_pieno() {
-		Borsa borsa = new Borsa();
-		
-		Attrezzo attr = new Attrezzo("", 0);
-		for(int i=0; i<10; i++)
-			assertTrue("Attrezzo non inserito", borsa.addAttrezzo(attr));
-		
-		assertFalse("Nella borsa c'è più spazio di 10 elementi", borsa.addAttrezzo(attr));
+//	/**
+//	 * Verifica che non è possibile aggiungere oltre 10 attrezzi.
+//	 */
+//	@Test
+//	public void testAddAttrezzo_pieno() {
+//		Borsa borsa = new Borsa();
+//		
+//		Attrezzo attr = new Attrezzo("", 0);
+//		for(int i=0; i<10; i++)
+//			assertTrue("Attrezzo non inserito", borsa.addAttrezzo(attr));
+//		
+//		assertFalse("Nella borsa c'è più spazio di 10 elementi", borsa.addAttrezzo(attr));
+//	}
+	
+	private Borsa borsa;
+	private final Attrezzo piuma = new Attrezzo("piuma", 0);
+	private final Attrezzo fazzoletto = new Attrezzo("fazzoletto", 0);
+	private final Attrezzo masso = new Attrezzo("masso", 10);
+	
+	private List<Attrezzo> list(Attrezzo... attrezzi) {
+		return Arrays.asList(attrezzi);
+	}
+	
+	private SortedSet<Attrezzo> sortedSet(Attrezzo...attrezzi) {
+		return new TreeSet<>(Arrays.asList(attrezzi));
+	}
+	
+	@Before 
+	public void setUp() {
+		this.borsa = new Borsa();
 	}
 	
 	@Test
@@ -215,5 +241,192 @@ public class BorsaTest {
 		assertEquals(
 				"Il peso della borsa non corrisponde alla somma dei pesi dei singoli attrezzi",
 				28, borsa.getPeso());
+	}
+	
+	@Test
+	public void testGetContenutoOrdinatoPerPeso_borsaVuota() {
+		assertTrue(this.borsa.getContenutoOrdinatoPerPeso().isEmpty());
+	}
+	
+	@Test
+	public void testGetContenutoOrdinatoPerPeso_unAttrezzo() {
+		this.borsa.addAttrezzo(this.piuma);
+		assertSame(1, this.borsa.getContenutoOrdinatoPerPeso().size());
+	}
+	
+	@Test
+	public void testGetContenutoOrdinatoPerPeso_unAttrezzoListaAttesa() {
+		this.borsa.addAttrezzo(this.piuma);
+		assertEquals(list(this.piuma), this.borsa.getContenutoOrdinatoPerPeso());
+	}
+	
+	@Test
+	public void testGetContenutoOrdinatoPerPeso_dueAttrezziOrdinatiCorrettamente() {
+		this.borsa.addAttrezzo(this.masso);
+		this.borsa.addAttrezzo(this.piuma);
+		assertEquals(this.piuma, this.borsa.getContenutoOrdinatoPerPeso().get(0));
+		assertEquals(this.masso, this.borsa.getContenutoOrdinatoPerPeso().get(1));
+	}
+	
+	@Test
+	public void testGetContenutoOrdinatoPerPeso_stessoAttrezzoInseritoPiuVolte() {
+		this.borsa.addAttrezzo(this.piuma);
+		this.borsa.addAttrezzo(this.piuma);
+		assertSame(1, this.borsa.getContenutoOrdinatoPerPeso().size());
+	}
+	
+	@Test
+	public void testGetContenutoOrdinatoPerPeso_dueAttrezziListaAttesa() {
+		this.borsa.addAttrezzo(this.masso);
+		this.borsa.addAttrezzo(this.piuma);
+		assertEquals(list(this.piuma, this.masso), this.borsa.getContenutoOrdinatoPerPeso());
+	}
+	
+	@Test
+	public void testGetContenutoOrdinatoPerPeso_dueAttrezziPesiUgualiListaAttesa() {
+		this.borsa.addAttrezzo(this.piuma);
+		this.borsa.addAttrezzo(this.fazzoletto);
+		assertEquals(list(this.fazzoletto, this.piuma), this.borsa.getContenutoOrdinatoPerPeso());
+	}
+	
+	@Test
+	public void testGetContenutoOrdinatoPerPeso_piuOggetti() {
+		this.borsa.addAttrezzo(this.masso);
+		this.borsa.addAttrezzo(this.fazzoletto);
+		this.borsa.addAttrezzo(this.piuma);
+		assertEquals(list(this.fazzoletto,this.piuma, this.masso), this.borsa.getContenutoOrdinatoPerPeso());
+	}
+	
+	@Test
+	public void testGetContenutoOrdinatoPerNome_borsaVuota() {
+		assertTrue(this.borsa.getContenutoOrdinatoPerNome().isEmpty());
+	}
+	
+	@Test
+	public void testGetContenutoOrdinatoPerNome_unAttrezzo() {
+		this.borsa.addAttrezzo(this.piuma);
+		assertSame(1, this.borsa.getContenutoOrdinatoPerNome().size());
+	}
+	
+	@Test
+	public void testGetContenutoOrdinatoPerNome_unAttrezzoListaAttesa() {
+		this.borsa.addAttrezzo(this.piuma);
+		assertEquals(sortedSet(this.piuma), this.borsa.getContenutoOrdinatoPerNome());
+	}
+	
+	@Test
+	public void testGetContenutoOrdinatoPerNome_stessoAttrezzoInseritoPiuVolte() {
+		this.borsa.addAttrezzo(this.piuma);
+		this.borsa.addAttrezzo(this.piuma);
+		assertSame(1, this.borsa.getContenutoOrdinatoPerNome().size());
+	}
+	
+	@Test
+	public void testGetContenutoOrdinatoPerNome_attrezziStessoPeso() {
+		this.borsa.addAttrezzo(this.piuma);
+		this.borsa.addAttrezzo(this.fazzoletto);
+		assertEquals(this.fazzoletto, this.borsa.getContenutoOrdinatoPerNome().first());
+		assertEquals(this.piuma, this.borsa.getContenutoOrdinatoPerNome().last());
+	}
+	
+	@Test
+	public void testGetContenutoOrdinatoPerNome_piuAttrezzi() {
+		this.borsa.addAttrezzo(this.masso);
+		this.borsa.addAttrezzo(this.piuma);
+		Iterator<Attrezzo> it = this.borsa.getContenutoOrdinatoPerNome().iterator();
+		assertEquals(this.masso, it.next());
+		assertEquals(this.piuma, it.next());
+	}
+	
+	@Test
+	public void testGetContenutoRaggruppatoPerPeso_borsaVuota() {
+		assertTrue(this.borsa.getContenutoRaggruppatoPerPeso().isEmpty());
+	}
+	
+	@Test
+	public void testGetContenutoRaggruppatoPerPeso_unAttrezzo_esisteChiave() {
+		this.borsa.addAttrezzo(this.piuma);
+		assertTrue(this.borsa.getContenutoRaggruppatoPerPeso().containsKey(this.piuma.getPeso()));
+	}
+	
+	@Test
+	public void testGetContenutoRaggruppatoPerPeso_unAttrezzo_dimensioneCorrettaMap() {
+		this.borsa.addAttrezzo(this.piuma);
+		assertSame(1, this.borsa.getContenutoRaggruppatoPerPeso().size());
+	}
+	
+	@Test
+	public void testGetContenutoRaggruppatoPerPeso_unAttrezzo_dimensioneCorrettaSet() {
+		this.borsa.addAttrezzo(this.piuma);
+		assertSame(1, this.borsa.getContenutoRaggruppatoPerPeso().get(this.piuma.getPeso()).size());
+	}
+	
+	// 2attrezzi stesso peso -> solo 1 chiave
+	@Test
+	public void testGetContenutoRaggruppatoPerPeso_piuAttrezziStessoPeso_unicaChiave() {
+		this.borsa.addAttrezzo(this.fazzoletto);
+		this.borsa.addAttrezzo(this.piuma);
+		assertSame(1, this.borsa.getContenutoRaggruppatoPerPeso().size());
+	}
+	
+	// 2attrezzi stesso peso -> set dim = 2
+	@Test
+	public void testGetContenutoRaggruppatoPerPeso_piuAttrezziStessoPeso_dimensioneSet() {
+		this.borsa.addAttrezzo(this.fazzoletto);
+		this.borsa.addAttrezzo(this.piuma);
+		assertSame(2, this.borsa.getContenutoRaggruppatoPerPeso().get(this.piuma.getPeso()).size());
+	}
+	
+	// 2attrezzi stesso peso -> la map contiene entrambi gli oggetti
+	@Test
+	public void testGetContenutoRaggruppatoPerPeso_piuAttrezziStessoPeso_attrezziGiusti() {
+		this.borsa.addAttrezzo(this.fazzoletto);
+		this.borsa.addAttrezzo(this.piuma);
+		assertTrue(this.borsa.getContenutoRaggruppatoPerPeso().get(this.piuma.getPeso()).contains(this.piuma));
+		assertTrue(this.borsa.getContenutoRaggruppatoPerPeso().get(this.piuma.getPeso()).contains(this.fazzoletto));
+	}
+	
+	// 2attrezzi nome uguale -> set dim = 1
+	@Test
+	public void testGetContenutoRaggruppatoPerPeso_piuAttrezziNomeUguale_dimensioneSet() {
+		Attrezzo piuma2 = new Attrezzo(this.piuma.getNome(), this.piuma.getPeso());
+		this.borsa.addAttrezzo(this.piuma);
+		this.borsa.addAttrezzo(piuma2);
+		assertSame(1, this.borsa.getContenutoRaggruppatoPerPeso().get(this.piuma.getPeso()).size());
+	}
+	
+	// 2attrezzi nome uguale peso diverso -> solo 1 chiave
+	@Test
+	public void testGetContenutoRaggruppatoPerPeso_piuAttrezziNomeUguale_dimensioneMap() {
+		Attrezzo piuma2 = new Attrezzo(this.piuma.getNome(), this.piuma.getPeso());
+		this.borsa.addAttrezzo(this.piuma);
+		this.borsa.addAttrezzo(piuma2);
+		assertSame(1, this.borsa.getContenutoRaggruppatoPerPeso().size());
+	}
+	
+	// 2attrezzi peso diverso -> 2 chiavi
+	@Test
+	public void testGetContenutoRaggruppatoPerPeso_piuAttrezziDiversi_dimensioneMap() {
+		this.borsa.addAttrezzo(this.piuma);
+		this.borsa.addAttrezzo(this.masso);
+		assertSame(2, this.borsa.getContenutoRaggruppatoPerPeso().size());
+	}
+	
+	// 2 attrezzi peso diverso -> gli attrezzi nella map sono quelli desiderati
+	@Test
+	public void testGetContenutoRaggruppatoPerPeso_piuAttrezziDiversi_contenutiCorrettamente() {
+		this.borsa.addAttrezzo(this.piuma);
+		this.borsa.addAttrezzo(this.masso);
+		assertTrue(this.borsa.getContenutoRaggruppatoPerPeso().get(this.piuma.getPeso()).contains(this.piuma));
+		assertTrue(this.borsa.getContenutoRaggruppatoPerPeso().get(this.masso.getPeso()).contains(this.masso));
+	}
+	
+	// 2attrezzi peso diverso -> set dim = 1 in entrambi i set
+	@Test
+	public void testGetContenutoRaggruppatoPerPeso_piuAttrezziDiversi_dimensioneSet() {
+		this.borsa.addAttrezzo(this.piuma);
+		this.borsa.addAttrezzo(this.masso);
+		assertSame(1, this.borsa.getContenutoRaggruppatoPerPeso().get(this.piuma.getPeso()).size());
+		assertSame(1, this.borsa.getContenutoRaggruppatoPerPeso().get(this.masso.getPeso()).size());
 	}
 }

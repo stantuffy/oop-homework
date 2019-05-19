@@ -19,16 +19,16 @@ import it.uniroma3.diadia.attrezzi.Attrezzo;
 
 public class Stanza {
 	
-	static final private int NUMERO_MASSIMO_DIREZIONI = 4;
-	static final private int NUMERO_MASSIMO_ATTREZZI = 10;
+	// static final private int NUMERO_MASSIMO_DIREZIONI = 4;
+	// static final private int NUMERO_MASSIMO_ATTREZZI = 10;
 	
 	private String nome;
     private HashMap<String, Attrezzo> attrezzi;
-    private int numeroAttrezzi;
+    // private int numeroAttrezzi;
     private HashMap<DirezioneStanza, Stanza> stanzeAdiacenti;
-    private int numeroStanzeAdiacenti;
-	private String[] direzioni;
-	private Attrezzo attrezzoVuoto;
+    // private int numeroStanzeAdiacenti;
+	// private String[] direzioni;
+	// private Attrezzo attrezzoVuoto;
 	
 	/// Crea un attrezzo non valido ai fini del gioco.
 	/// Tale oggetto serve unicamente per evitare che
@@ -45,9 +45,9 @@ public class Stanza {
      */
     public Stanza(String nome) {
         this.nome = nome;
-        this.numeroStanzeAdiacenti = 0;
-        this.numeroAttrezzi = 0;
-        this.direzioni = new String[NUMERO_MASSIMO_DIREZIONI];
+        // this.numeroStanzeAdiacenti = 0;
+        // this.numeroAttrezzi = 0;
+        // this.direzioni = new String[NUMERO_MASSIMO_DIREZIONI];
         this.stanzeAdiacenti = new HashMap<>();
         this.attrezzi = new HashMap<String, Attrezzo>();
         
@@ -219,7 +219,7 @@ public class Stanza {
 	 * @return Ritorna il numero di attrezzi presenti nella stanza.
 	 */
 	public int getNumAttrezzi() {
-		return this.numeroAttrezzi;
+		return this.getAttrezzi().size();
 	}
 
 
@@ -258,9 +258,9 @@ public class Stanza {
     	risultato.append(this.nome);
     	risultato.append("\nUscite: ");
     	
-    	Iterator<DirezioneStanza> direzioni = this.getDirezioni().iterator();
-    	while(direzioni.hasNext())
-    		risultato.append(" " + direzioni.toString());
+    	Iterator<DirezioneStanza> direzioneIt = this.getDirezioni().iterator();
+    	while(direzioneIt.hasNext())
+    		risultato.append(" " + direzioneIt.next().toString());
     	
     	risultato.append("\nAttrezzi nella stanza: ");
     	Iterator<Attrezzo> it = this.attrezzi.values().iterator();
