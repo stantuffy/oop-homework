@@ -429,4 +429,53 @@ public class BorsaTest {
 		assertSame(1, this.borsa.getContenutoRaggruppatoPerPeso().get(this.piuma.getPeso()).size());
 		assertSame(1, this.borsa.getContenutoRaggruppatoPerPeso().get(this.masso.getPeso()).size());
 	}
+	
+	@Test
+	public void testGetSortedSetOrdinatoPerPeso_borsaVuota() {
+		assertTrue(this.borsa.getSortedSetOrdinatoPerPeso().isEmpty());
+	}
+	
+	// 2 attrezzi con lo stesso peso -> size = 2
+	@Test
+	public void testGetSortedSetOrdinatoPerPeso_pesoUguale_dimensioneSet() {
+		this.borsa.addAttrezzo(this.piuma);
+		this.borsa.addAttrezzo(this.fazzoletto);
+		assertSame(2, this.borsa.getSortedSetOrdinatoPerPeso().size());
+	}
+	
+	// 2 attrezzi con lo stesso peso -> ordinati per nome
+	@Test
+	public void testGetSortedSetOrdinatoPerPeso_pesoUguale_ordinatiPerNome() {
+		this.borsa.addAttrezzo(this.piuma);
+		this.borsa.addAttrezzo(this.fazzoletto);
+		assertSame(this.fazzoletto, this.borsa.getSortedSetOrdinatoPerPeso().first());
+		assertSame(this.piuma, this.borsa.getSortedSetOrdinatoPerPeso().last());
+	}
+	
+	// 2 attrezzi con nome diverso -> contenuti nel set
+	@Test
+	public void testGetSortedSetOrdinatoPerPeso_diversoNome_contenutiNelSet() {
+		this.borsa.addAttrezzo(this.piuma);
+		this.borsa.addAttrezzo(this.fazzoletto);
+		assertTrue(this.borsa.getSortedSetOrdinatoPerPeso().contains(this.piuma));
+		assertTrue(this.borsa.getSortedSetOrdinatoPerPeso().contains(this.fazzoletto));
+	}
+	
+	// 2 attrezzi con nome uguale e peso diverso -> il set ha dimensione 1
+	@Test
+	public void testGetSortedSetOrdinatoPerPeso_nomeUgualePesoDiverso_dimensioneSet() {
+		this.borsa.addAttrezzo(this.piuma);
+		Attrezzo piuma2 = new Attrezzo("piuma", 1);
+		this.borsa.addAttrezzo(piuma2);
+		assertSame(1, this.borsa.getSortedSetOrdinatoPerPeso().size());
+	}
+	
+	// 2 attrezzi con pesi diversi -> ordinati per peso
+	@Test
+	public void testGetSortedSetOrdinatoPerPeso_ordinatiCorrettamente() {
+		this.borsa.addAttrezzo(this.masso);
+		this.borsa.addAttrezzo(this.piuma);
+		assertSame(this.piuma, this.borsa.getSortedSetOrdinatoPerPeso().first());
+		assertSame(this.masso, this.borsa.getSortedSetOrdinatoPerPeso().last());
+	}
 }
