@@ -53,19 +53,20 @@ public class FabbricaDiComandiFisarmonicaTest {
 		assertEquals("", comandoAiuto.getParametro());
 	}
 	
-	// Aiuto con parametro -> il suo parametro è ""
-	@Test
-	public void testCreaComandoAiutoConParametro() {
-		Comando comandoAiuto = this.factory.creaComando("aiuto parametro");
-		assertEquals("", comandoAiuto.getParametro());
-	}
 	
-	// Fine con parametro -> il suo parametro è ""
-	@Test
-	public void testCreaComandoFineConParametro() {
-		Comando comandoFine = this.factory.creaComando("fine parametro");
-		assertEquals("", comandoFine.getParametro());
-	}
+//	// Aiuto con parametro -> il suo parametro è ""
+//	@Test
+//	public void testCreaComandoAiutoConParametro() {
+//		Comando comandoAiuto = this.factory.creaComando("aiuto parametro");
+//		assertEquals("", comandoAiuto.getParametro());
+//	}
+//	
+//	// Fine con parametro -> il suo parametro è ""
+//	@Test
+//	public void testCreaComandoFineConParametro() {
+//		Comando comandoFine = this.factory.creaComando("fine parametro");
+//		assertEquals("", comandoFine.getParametro());
+//	}
 	
 	// Fine -> il suo parametro è la stringa vuota
 	@Test

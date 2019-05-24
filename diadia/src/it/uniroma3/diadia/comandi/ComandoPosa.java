@@ -5,13 +5,7 @@ import it.uniroma3.diadia.attrezzi.Attrezzo;
 import it.uniroma3.diadia.giocatore.Giocatore;
 import it.uniroma3.diadia.Partita;
 
-public class ComandoPosa implements Comando {
-	private String nomeAttrezzo;
-	
-	@Override
-	public void setParametro(String parametro) {
-		this.nomeAttrezzo = parametro;
-	}
+public class ComandoPosa extends AbstractComando implements Comando {
 	
 	@Override
 	public void esegui(Partita partita) {
@@ -19,7 +13,7 @@ public class ComandoPosa implements Comando {
 		Stanza stanzaCorrente = partita.getStanzaCorrente();
 		
 		// Controllo se tale attrezzo esiste nella borsa
-		Attrezzo attrezzo = giocatore.posa(nomeAttrezzo);
+		Attrezzo attrezzo = giocatore.posa(super.getParametro());
 		if(attrezzo == null) {
 			System.out.println("Non possiedi un oggetto con quel nome.");
 			return;
@@ -34,16 +28,11 @@ public class ComandoPosa implements Comando {
 			return;
 		}
 		
-		System.out.println("Hai lasciato cadere " + nomeAttrezzo);
+		System.out.println("Hai lasciato cadere " + super.getParametro());
 	}
-	
+
 	@Override
 	public String getNome() {
 		return "posa";
-	}
-	
-	@Override
-	public String getParametro() {
-		return this.nomeAttrezzo;
 	}
 }

@@ -4,10 +4,12 @@ import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.giocatore.Borsa;
 import it.uniroma3.diadia.giocatore.Giocatore;
 
-public class ComandoGuarda implements Comando {
+public class ComandoGuarda extends AbstractComando implements Comando {
 	
 	@Override
-	public void setParametro(String parametro) {}
+	public String getNome() {
+		return "guarda";
+	}
 	
 	@Override
 	public void esegui(Partita partita) {
@@ -17,15 +19,5 @@ public class ComandoGuarda implements Comando {
 		System.out.println("Al momento hai " + giocatore.getCfu() + " cfu.");
 		System.out.println(borsa);
 		System.out.println(partita.getStanzaCorrente().getDescrizione());
-	}
-	
-	@Override
-	public String getNome() {
-		return "guarda";
-	}
-	
-	@Override
-	public String getParametro() {
-		return "";
 	}
 }

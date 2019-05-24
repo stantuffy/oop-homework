@@ -3,22 +3,16 @@ package it.uniroma3.diadia.comandi;
 import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.ambienti.Stanza;
 
-public class ComandoVai implements Comando {
-	private String direzione;
-	
-	@Override
-	public void setParametro(String parametro) {
-		this.direzione = parametro;
-	}
+public class ComandoVai extends AbstractComando implements Comando {
 	
 	@Override
 	public void esegui(Partita partita) {
-		if(this.direzione == null) {
+		if(super.getParametro() == null) {
 			System.out.println("Dove vuoi andare?");
 			return;
 		}
 		
-		Stanza prossimaStanza = partita.getStanzaCorrente().getStanzaAdiacente(this.direzione);
+		Stanza prossimaStanza = partita.getStanzaCorrente().getStanzaAdiacente(super.getParametro());
 		if(prossimaStanza == null) {
 			System.out.println("Direzione inesistente");
 			return;
@@ -32,7 +26,7 @@ public class ComandoVai implements Comando {
 		// è rimasta la stessa, allora la direzione percorsa
 		// è bloccata. L'utente viene informato e non perde cfu.
 		if(stanzaPrecedente == partita.getStanzaCorrente()) {
-			System.out.println("Direzione " + this.direzione + " bloccata");
+			System.out.println("Direzione " + super.getParametro() + " bloccata");
 			return;
 		}
 		
@@ -46,10 +40,5 @@ public class ComandoVai implements Comando {
 	@Override
 	public String getNome() {
 		return "vai";
-	}
-	
-	@Override
-	public String getParametro() {
-		return this.direzione;
 	}
 }
