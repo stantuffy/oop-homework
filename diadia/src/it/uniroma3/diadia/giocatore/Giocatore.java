@@ -11,7 +11,7 @@ public class Giocatore {
 	}
 	
 	public Giocatore(int cfu) {
-		this.borsa = new Borsa();
+		this.borsa = new Borsa(200);
 		this.cfu = cfu;
 	}
 	

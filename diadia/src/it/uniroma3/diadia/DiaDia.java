@@ -1,9 +1,6 @@
 package it.uniroma3.diadia;
 
 import java.util.Scanner;
-
-import it.uniroma3.diadia.ambienti.Stanza;
-import it.uniroma3.diadia.attrezzi.Attrezzo;
 import it.uniroma3.diadia.comandi.Comando;
 import it.uniroma3.diadia.comandi.FabbricaDiComandiFisarmonica;
 
@@ -46,6 +43,7 @@ public class DiaDia {
 		do		
 			istruzione = scannerDiLinee.nextLine();
 		while (!processaIstruzione(istruzione));
+		scannerDiLinee.close();
 	}   
 
 
@@ -61,10 +59,10 @@ public class DiaDia {
 		comando.esegui(this.partita);
 		
 		if (this.partita.vinta()) {
-			System.out.println("Hai vinto!");
+			System.out.println("HAI VINTO!");
 			return true;
 		} else if(this.partita.getGiocatore().getCfu() <= 0) {
-			System.out.println("Hai finito i cfu, hai perso!");
+			System.out.println("Cfu esauriti, HAI PERSO!");
 			return true;
 		}
 		else if(this.partita.isFinita()) {

@@ -7,10 +7,6 @@ import it.uniroma3.diadia.ambienti.Labirinto;
 
 public class LabirintoTest {
 	
-	/**
-	 * All'inizializzazione del labirinto,
-	 * esso non è vuoto.
-	 */
 	@Test
 	public void testStanzaCorrente_esiste() {
 		Labirinto l = new Labirinto();
@@ -20,10 +16,6 @@ public class LabirintoTest {
 				l.getStanzaCorrente());
 	}
 	
-	/**
-	 * All'inizializzazione del labirinto,
-	 * esiste la stanza vincente.
-	 */
 	@Test
 	public void testStanzaVincente_esiste() {
 		Labirinto l = new Labirinto();

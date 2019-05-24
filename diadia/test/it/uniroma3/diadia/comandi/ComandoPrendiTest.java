@@ -42,6 +42,6 @@ public class ComandoPrendiTest {
 	public void testEseguiStanzaHaUnAttrezzoInMeno() {
 		int prevSize = this.partita.getStanzaCorrente().getNumAttrezzi();
 		this.comando.esegui(this.partita);
-		assertSame(prevSize - 1, this.partita.getStanzaCorrente().getNumAttrezzi());
+		assertEquals(prevSize - 1, this.partita.getStanzaCorrente().getNumAttrezzi());
 	}
 }

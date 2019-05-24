@@ -1,53 +1,45 @@
 package it.uniroma3.diadia.giocatore;
+import it.uniroma3.diadia.attrezzi.*;
+import java.util.*;
 
-import it.uniroma3.diadia.attrezzi.Attrezzo;
 
 public class Borsa {
-	public final static int DEFAULT_PESO_MAX_BORSA = 10;
-	private Attrezzo[] attrezzi;
+	private HashMap<String,Attrezzo> attrezzi;
 	private int numeroAttrezzi;
 	private int pesoMax;
-	
-	public Borsa() {
-		this(DEFAULT_PESO_MAX_BORSA);
-	}
+	private int pesoAttuale;
 	
 	public Borsa(int pesoMax) {
 		this.pesoMax = pesoMax;
-		this.attrezzi = new Attrezzo[10];
+		this.pesoAttuale = 0;
 		this.numeroAttrezzi = 0;
+		this.attrezzi = new HashMap<String,Attrezzo>();
 	}
 	
 	public boolean addAttrezzo(Attrezzo attrezzo) {
-		if(this.getPeso() + attrezzo.getPeso() > this.getPesoMax())
-			return false;
-		if(this.numeroAttrezzi == 10)
-			return false;
-		
-		this.attrezzi[this.numeroAttrezzi] = attrezzo;
-		this.numeroAttrezzi ++;
-		return true;
+		if (pesoAttuale <= pesoMax && attrezzo.getPeso() <= pesoMax) {
+			this.attrezzi.put(attrezzo.getNome(), attrezzo);
+			pesoAttuale += attrezzo.getPeso();
+			numeroAttrezzi++;
+			return true;
+		}
+		return false;
 	}
 	
 	public int getPesoMax() {
 		return pesoMax;
 	}
 	
-	public Attrezzo getAttrezzo(String nomeAttrezzo) {
-		Attrezzo a = null;
-		for(int i=0; i<this.numeroAttrezzi; i++)
-			if(this.attrezzi[i].getNome().contentEquals(nomeAttrezzo))
-				a = attrezzi[i];
-		
-		return a;
+	public int getPesoAttuale() {
+		return pesoAttuale;
 	}
 	
-	public int getPeso() {
-		int peso = 0;
-		for(int i=0; i<this.numeroAttrezzi; i++)
-			peso += this.attrezzi[i].getPeso();
-		
-		return peso;
+	public int getNumeroAttrezzi() {
+		return attrezzi.size();
+	}
+	
+	public Attrezzo getAttrezzo(String nomeAttrezzo) {
+		return this.attrezzi.get(nomeAttrezzo);
 	}
 	
 	public boolean isEmpty() {
@@ -59,42 +51,59 @@ public class Borsa {
 	}
 	
 	public Attrezzo removeAttrezzo(String nomeAttrezzo) {
-		Attrezzo a = null;
+		Attrezzo daRimuovere = this.attrezzi.remove(nomeAttrezzo);
+		if (daRimuovere != null)
+			numeroAttrezzi--;
+		return daRimuovere;
 		
-		if(nomeAttrezzo == null)
-			return a;
-		
-		int i;
-		for(i=0; i<this.numeroAttrezzi; i++) {
-			if(this.attrezzi[i].getNome().contentEquals(nomeAttrezzo)) {
-				a = this.attrezzi[i];
-				this.attrezzi[i] = null;
-				break;
-			}
-		}
-		
-		/**
-		 * Se ho rimosso l'attrezzo,
-		 * sposto a sinistra tutti gli attrezzi di una posizione
-		 * in modo tale da avere tutti attrezzi a sinistra
-		 * e tutti null a destra.
-		 */
-		if(a != null) {
-			i++;
-			for(; i<this.numeroAttrezzi; i++)
-				this.attrezzi[i-1] = this.attrezzi[i];
-			this.numeroAttrezzi--;
-		}
-		
-		return a;
+			
 	}
 	
+	public List<Attrezzo> getContenutoOrdinatoPerPeso() {
+		List<Attrezzo> ordinata = new ArrayList<>(this.getNumeroAttrezzi());
+		
+		for (Attrezzo a : this.attrezzi.values()) 
+			ordinata.add(a);
+		
+		Collections.sort(ordinata, new ComparatoreAttrezziPerPeso());
+		return ordinata;
+	}
+	
+	public SortedSet<Attrezzo> getContenutoOrdinatoPerNome() {
+		SortedSet<Attrezzo> ordinato = new TreeSet<Attrezzo>(new ComparatoreAttrezziPerNome());
+		ordinato.addAll(this.attrezzi.values());
+		return ordinato;
+	}
+	
+	public Map<Integer,Set<Attrezzo>> getContenutoRaggruppatoPerPeso() {
+		Map<Integer,Set<Attrezzo>> raggruppato = new HashMap<>(this.getPesoMax());
+		
+		for (int i=0; i<=this.getPesoMax(); i++) {
+			raggruppato.put(i, getSetAttrezzoPerPeso(i));
+		}
+		return raggruppato;
+	}
+	
+	public Set<Attrezzo> getSetAttrezzoPerPeso(int peso) {
+		Set<Attrezzo> set = new TreeSet<>();
+		for (Attrezzo a : this.attrezzi.values()) {
+			if (a.getPeso() == peso)
+				set.add(a);
+		}
+		return set;
+	}
+	
+	public String getDescrizione() {
+		return this.toString();
+	}
+	
+	@Override
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		if(!this.isEmpty()) {
-			s.append("Contenuto borsa (" + this.getPeso() + "kg/" + this.getPesoMax() + "kg): ");
-			for(int i=0; i<this.numeroAttrezzi; i++)
-				s.append(attrezzi[i].toString() + " ");
+			s.append("Contenuto borsa (" + this.getPesoAttuale() + "kg/" + this.getPesoMax() + "kg): ");
+			for(Attrezzo a : this.attrezzi.values())
+				s.append(a.toString() + " ");
 		}
 		else
 			s.append("Borsa vuota");

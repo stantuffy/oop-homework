@@ -2,23 +2,23 @@ package it.uniroma3.diadia.giocatore;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 import it.uniroma3.diadia.giocatore.Borsa;
 
 public class BorsaTest {
-	/**
-	 * Verifica che non è possibile aggiungere oltre 10 attrezzi.
-	 */
+	
+	private static final Attrezzo CASCO = new Attrezzo("casco",2);
+	private static final Attrezzo MAZZA = new Attrezzo("mazza",3);
+	private static final Attrezzo FORCHETTA = new Attrezzo("forchetta",0);
+	private static final Attrezzo ELEFANTE = new Attrezzo("elefante",100);
+	private static final Attrezzo RIGHELLO = new Attrezzo("righello",1);
+	
 	@Test
 	public void testAddAttrezzo_pieno() {
-		Borsa borsa = new Borsa();
+		Borsa borsa = new Borsa(100);
+		borsa.addAttrezzo(new Attrezzo("elefante", 101));
 		
-		Attrezzo attr = new Attrezzo("", 0);
-		for(int i=0; i<10; i++)
-			assertTrue("Attrezzo non inserito", borsa.addAttrezzo(attr));
-		
-		assertFalse("Nella borsa c'è più spazio di 10 elementi", borsa.addAttrezzo(attr));
+		assertFalse(borsa.hasAttrezzo("elefante"));
 	}
 	
 	@Test
@@ -27,10 +27,6 @@ public class BorsaTest {
 		assertEquals(23, borsa.getPesoMax());
 	}
 	
-	/**
-	 * Verifica che non sia possibile aggiungere un attrezzo
-	 * con peso superiore al massimo specificato.
-	 */
 	@Test
 	public void testAddAttrezzo_troppoPesante() {
 		Borsa borsa = new Borsa(10);
@@ -54,83 +50,55 @@ public class BorsaTest {
 		assertEquals(2, trovato.getPeso());
 	}
 	
-	/**
-	 * verifica che il metodo getAttrezzo restituisca null
-	 * se viene passato come argomento il nome di un attrezzo
-	 * non presente in borsa.
-	 */
 	@Test
 	public void testGetAttrezzo_nonPresente() {
-		Borsa borsa = new Borsa();
+		Borsa borsa = new Borsa(30);
 		
 		assertNull(
 				"E' stato trovato un oggetto inesistente nella borsa", 
 				borsa.getAttrezzo("Non presente"));
 	}
 	
-	/**
-	 * verifica che, se la borsa contiene almeno un attrezzo,
-	 * il metodo isEmpty() ritorni false
-	 */
 	@Test
 	public void testEmpty_borsaNonVuota() {
-		Borsa borsa = new Borsa();
+		Borsa borsa = new Borsa(10);
 		
 		Attrezzo attr = new Attrezzo("Cocconcino", 2);
 		borsa.addAttrezzo(attr);
 		
-		assertFalse(
-				"Un attrezzo è stato messo nella borsa, "
-				+ "ma continua a risultare vuota",
-				borsa.isEmpty());
+		
+		assertFalse("Un attrezzo è stato messo nella borsa, " + "ma continua a risultare vuota",borsa.isEmpty());
+		assertTrue(borsa.getNumeroAttrezzi() == 1);
 	}
 	
-	/**
-	 * verifica che una borsa appena creata sia vuota.
-	 */
 	@Test
 	public void testEmpty_borsaVuota() {
-		Borsa borsa = new Borsa();
+		Borsa borsa = new Borsa(1);
 		
 		assertTrue(
 				"Borsa non vuota al momento della sua creazione", 
 				borsa.isEmpty());
 	}
 	
-	/**
-	 * Verifica che l'invocazione di removeAttrezzo 
-	 * su un attrezzo non presente in borsa restituisca null.
-	 */
 	@Test
 	public void testRemoveAttrezzo_nonPresente() {
-		Borsa borsa = new Borsa();
+		Borsa borsa = new Borsa(10);
 		
 		Attrezzo attr = new Attrezzo("Pallone", 0);
 		borsa.addAttrezzo(attr);
-		
-		assertNull(
-				"La rimozione dalla borsa di un attrezzo inesistente non è fallito", 
-				borsa.removeAttrezzo("Spada"));
+	
+		assertNull(borsa.removeAttrezzo("Spada"));
 	}
 	
-	/**
-	 * Verifica che l'invocazione di removeAttrezzo
-	 * passando argomento null non faccia crashare il programma.
-	 * Inoltre tale metodo deve ritornare null.
-	 */
 	@Test
 	public void testRemoveAttrezzo_null() {
-		Borsa borsa = new Borsa();
+		Borsa borsa = new Borsa(10);
 		
 		assertNull(
 				"E' stato rimosso null dalla borsa",
 				borsa.removeAttrezzo(null));
 	}
 	
-	/**
-	 * Verifica che la rimozione di un attrezzo
-	 * presente in borsa riesca con successo.
-	 */
 	@Test
 	public void testRemoveAttrezzo_presente() {
 		Borsa borsa = new Borsa(10);
@@ -143,25 +111,17 @@ public class BorsaTest {
 				borsa.removeAttrezzo("Spada"));
 	}
 	
-	/**
-	 * Verifica che se invoco hasAttrezzo sul nome
-	 * di un attrezzo non esistente, ritorna false.
-	 */
 	@Test
 	public void testHasAttrezzo_nonPresente() {
-		Borsa borsa = new Borsa();
+		Borsa borsa = new Borsa(10);
 		
 		assertFalse("La borsa vuota dice che possiede un attrezzo", 
 				borsa.hasAttrezzo("Pasta"));
 	}
 	
-	/**
-	 * Verifica che se invoco hasAttrezzo passando una stringa null
-	 * il programma non crasha. Inoltre deve ritornare false.
-	 */
 	@Test
 	public void testHasAttrezzo_null() {
-		Borsa borsa = new Borsa();
+		Borsa borsa = new Borsa(10);
 		
 		assertFalse("La borsa dispone dell'oggetto con nome null", 
 				borsa.hasAttrezzo(null));
@@ -179,31 +139,22 @@ public class BorsaTest {
 				borsa.hasAttrezzo("Pasta"));
 	}
 	
-	/**
-	 * Verifica che, al momento della creazione della borsa,
-	 * il suo peso è pari a zero.
-	 */
 	@Test
 	public void testGetPeso_onInit() {
-		Borsa borsa = new Borsa();
+		Borsa borsa = new Borsa(10);
 		
 		assertEquals(
 				"La borsa appena creata pesa più di zero",
-				0, borsa.getPeso());
+				0, borsa.getPesoAttuale());
 	}
 	
-	/**
-	 * Verifica che, aggiungendo un numero di attrezzi,
-	 * il peso della borsa sia dato dalla somma dei pesi
-	 * dei singoli attrezzi.
-	 */
 	@Test
 	public void testGetPeso() {
 		Borsa borsa = new Borsa(30);
 		
 		Attrezzo[] attr = new Attrezzo[5];
 		
-		attr[0] = new Attrezzo("Forchetta", 9);
+		attr[0] = new Attrezzo("Porchetta", 9);
 		attr[1] = new Attrezzo("Guanciale", 2);
 		attr[2] = new Attrezzo("Pasta", 3);
 		attr[3] = new Attrezzo("Piatto", 4);
@@ -212,8 +163,43 @@ public class BorsaTest {
 		for(int i=0; i<5; i++)
 			borsa.addAttrezzo(attr[i]);
 		
-		assertEquals(
-				"Il peso della borsa non corrisponde alla somma dei pesi dei singoli attrezzi",
-				28, borsa.getPeso());
+		assertFalse(30 == borsa.getPesoAttuale());
+		assertEquals(28, borsa.getPesoAttuale());
+	}
+	
+	@Test
+	public void testGetContenutoOrdinatoPerPeso() {
+		Borsa b = new Borsa(20);
+		b.addAttrezzo(CASCO);
+		b.addAttrezzo(MAZZA);
+		b.addAttrezzo(FORCHETTA);
+		
+		assertTrue(b.getContenutoOrdinatoPerPeso().indexOf(FORCHETTA) == 0);
+		assertFalse(b.getContenutoOrdinatoPerPeso().indexOf(MAZZA) == 1);
+		
+	}
+	
+	@Test
+	public void testGetContenutoOrdinatoPerNome() {
+		Borsa b = new Borsa(20);
+		b.addAttrezzo(CASCO);
+		b.addAttrezzo(MAZZA);
+		b.addAttrezzo(FORCHETTA);
+		
+		assertTrue(b.getContenutoOrdinatoPerNome().first().equals(CASCO));
+	}
+	
+	@Test
+	public void testGetContenutoRaggruppatoPerPeso() {
+		Borsa b = new Borsa(20);
+		b.addAttrezzo(CASCO);
+		b.addAttrezzo(ELEFANTE);
+		b.addAttrezzo(FORCHETTA);
+		b.addAttrezzo(MAZZA);
+		b.addAttrezzo(RIGHELLO);
+		
+		assertTrue(b.getContenutoRaggruppatoPerPeso().get(1).contains(RIGHELLO));
+		assertTrue(b.getContenutoRaggruppatoPerPeso().get(1).size() == 1);
+		assertTrue(b.getContenutoRaggruppatoPerPeso().get(20).size() == 0);
 	}
 }

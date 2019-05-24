@@ -11,3 +11,5 @@ public interface Comando {
 	
 	public String getParametro();
 }
+
+

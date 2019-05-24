@@ -14,9 +14,11 @@ public class ComandoGuarda implements Comando {
 		Giocatore giocatore = partita.getGiocatore();
 		Borsa borsa = giocatore.getBorsa();
 		
+		System.out.println("=======================================");
 		System.out.println("Al momento hai " + giocatore.getCfu() + " cfu.");
-		System.out.println(borsa);
 		System.out.println(partita.getStanzaCorrente().getDescrizione());
+		System.out.println(borsa.getDescrizione());
+		System.out.println("=======================================");
 	}
 	
 	@Override

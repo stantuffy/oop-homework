@@ -3,7 +3,7 @@ package it.uniroma3.diadia.comandi;
 import java.util.Scanner;
 
 public class FabbricaDiComandiFisarmonica implements FabbricaDiComandi {
-	public final static String[] ELENCO_COMANDI = {"vai", "prendi", "posa", "aiuto", "guarda", "fine"};
+	public static final String[] ELENCO_COMANDI = {"vai", "prendi", "posa", "aiuto", "guarda", "fine"};
 	
 	@Override
 	public Comando creaComando(String istruzione) {

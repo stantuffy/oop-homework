@@ -16,11 +16,6 @@ public class PartitaTest {
 		this.partita = new Partita();
 	}
 	
-	/**
-	 * Verifica che, quando i cfu raggiungono lo zero, 
-	 * la partita comunichi che è finita.
-	 */
-	@Test
 	public void testFinita_zeroCfu() {
 		this.partita.getGiocatore().setCfu(0);
 		
@@ -30,9 +25,6 @@ public class PartitaTest {
 		);
 	}
 	
-	/**
-	 * All'inizio della partita, esiste una stanza nella quale ci troviamo.
-	 */
 	@Test
 	public void testStanzaCorrente_esiste() {
 		assertNotNull(
@@ -41,9 +33,6 @@ public class PartitaTest {
 		);
 	}
 	
-	/**
-	 * Quando la partita viene creata, non è ancora stata vinta.
-	 */
 	@Test
 	public void testVinta_onInit() {
 		assertFalse(
@@ -81,21 +70,12 @@ public class PartitaTest {
 			this.partita.vinta());
 	}
 	
-	/**
-	 * Verifica che, alla creazione di una nuova partita,
-	 * il sistema imposti in automatico una stanza vincente.
-	 */
 	@Test
 	public void testStanzaVincente_esiste() {
 		Partita p = new Partita();
 		assertNotNull("Non esiste la stanza vincente", p.getStanzaVincente());
 	}
 	
-	/**
-	 * Alla creazione di una nuova partita,
-	 * il sistema deve impostare in automatico la biblioteca 
-	 * come stanza vincente.
-	 */
 	@Test
 	public void testStanzaVincente_biblioteca() {
 		Partita p = new Partita();
@@ -105,5 +85,4 @@ public class PartitaTest {
 				"Biblioteca", p.getStanzaVincente().getNome()
 			);
 	}
-	
 }
