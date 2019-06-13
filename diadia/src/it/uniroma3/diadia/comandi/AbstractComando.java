@@ -2,7 +2,7 @@ package it.uniroma3.diadia.comandi;
 
 import it.uniroma3.diadia.Partita;
 
-public abstract class AbstractComando {
+public abstract class AbstractComando implements Comando {
 	private String parametro;
 
 	public String getParametro() {
